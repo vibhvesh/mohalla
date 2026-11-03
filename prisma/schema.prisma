@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String?  @unique
+  phone        String?  @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  venues      Venue[]
+  bookings    Booking[]
+  gamesHosted PickupGame[] @relation("GameHost")
+  gameJoins   PickupJoin[]
+}
+
+model Venue {
+  id           String   @id @default(cuid())
+  ownerId      String?
+  owner        User?    @relation(fields: [ownerId], references: [id])
+  name         String
+  description  String   @default("")
+  address      String   @default("")
+  area         String   @default("")
+  city         String
+  lat          Float
+  lng          Float
+  sports       String[]
+  hourlyPrice  Int?
+  photos       String[]
+  contactPhone String?
+  contactEmail String?
+  openingHours Json?
+  timezone     String   @default("Asia/Kolkata")
+  claimed      Boolean  @default(false)
+  source       String   @default("owner")
+  osmId        String?  @unique
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bookings Booking[]
+  blocks   SlotBlock[]
+  games    PickupGame[]
+
+  @@index([city])
+  @@index([ownerId])
+}
+
+model SlotBlock {
+  id        String   @id @default(cuid())
+  venueId   String
+  venue     Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  date      String
+  startTime String
+  endTime   String
+  reason    String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([venueId, date])
+}
+
+model Booking {
+  id                String   @id @default(cuid())
+  venueId           String
+  venue             Venue    @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  sport             String
+  date              String
+  startTime         String
+  endTime           String
+  status            String   @default("pending")
+  amountInr         Int
+  paymentMethod     String   @default("pay_at_venue")
+  paymentStatus     String   @default("pay_at_venue")
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([venueId, date])
+  @@index([userId])
+}
+
+model PickupGame {
+  id            String   @id @default(cuid())
+  hostId        String
+  host          User     @relation("GameHost", fields: [hostId], references: [id])
+  venueId       String?
+  venue         Venue?   @relation(fields: [venueId], references: [id])
+  sport         String
+  title         String
+  area          String
+  city          String
+  date          String
+  time          String
+  playersNeeded Int
+  note          String   @default("")
+  status        String   @default("open")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  joins         PickupJoin[]
+
+  @@index([city, date])
+}
+
+model PickupJoin {
+  id        String     @id @default(cuid())
+  gameId    String
+  game      PickupGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  createdAt DateTime   @default(now())
+
+  @@unique([gameId, userId])
+}

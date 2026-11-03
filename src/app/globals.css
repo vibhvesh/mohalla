@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: #f3eee4;
+  --color-ink: #14241c;
+  --color-pitch: #0e3b2e;
+  --color-pitch-soft: #1b5c45;
+  --color-lime: #dff25a;
+  --color-clay: #e07a3d;
+  --color-card: #fffdf8;
+  --color-line: #e4d8c6;
+  --color-muted: #5c6b63;
+  --color-danger: #9d2c2c;
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(900px 420px at 110% -10%, rgba(223, 242, 90, 0.45), transparent 55%),
+    radial-gradient(700px 380px at -20% -10%, rgba(14, 59, 46, 0.12), transparent 50%),
+    var(--color-paper);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: #dff25a;
+  color: #0e3b2e;
+}
+
+:focus-visible {
+  outline: 2px solid #0e3b2e;
+  outline-offset: 2px;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.pitch-pattern {
+  background-color: #146046;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, transparent 0 18%, rgba(223, 242, 90, 0.9) 19% 20%, transparent 21%),
+    linear-gradient(rgba(223, 242, 90, 0.9), rgba(223, 242, 90, 0.9));
+  background-size:
+    32px 32px,
+    32px 32px,
+    120px 120px,
+    2px 100%;
+  background-position: center, center, center, center;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+}
+
+.pin {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px 999px 999px 6px;
+  transform: rotate(-45deg);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 18px rgba(14, 59, 46, 0.28);
+}
+
+.pin span {
+  transform: rotate(45deg);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pin-open {
+  background: #0e3b2e;
+  border: 2px solid #dff25a;
+  color: #dff25a;
+}
+
+.pin-unclaimed {
+  background: #fffdf8;
+  border: 2px solid #e07a3d;
+  color: #e07a3d;
+}
+
+.pin-selected {
+  background: #dff25a;
+  border: 2px solid #0e3b2e;
+  color: #0e3b2e;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  font-family: inherit;
+  background: #d7efe4;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 20;
+}

@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: mohalla
+      POSTGRES_PASSWORD: mohalla
+      POSTGRES_DB: mohalla
+    ports:
+      - "5432:5432"
+    volumes:
+      - mohalla_pg:/var/lib/postgresql/data
+
+volumes:
+  mohalla_pg:
